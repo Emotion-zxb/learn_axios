@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        div{
+            width: 400px;
+            height: 200px;
+            border: 1px red solid;
+        }
+        p{
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <button id="btn">查询</button>
+    <div id="box"></div>
+</body>
+<script>
+    const btn = document.getElementById('btn');
+    const box = document.getElementById('box');
+    btn.onclick = () => {
+        const xhr = new XMLHttpRequest();
+        //超时设置
+        xhr.timeout = 7000;
+        //超时弹出提示
+        xhr.ontimeout = function (){
+            alert('请求超时了')
+        }
+        //网络问题
+        xhr.onerror = function (){
+            alert('网络异常');
+        }
+        //设置响应数据的格式
+        xhr.responseType = 'json';
+        //请求方式&请求URL
+        //get请求的参数可以在URL后面加查询字符串
+        xhr.open('post','http://127.0.0.1:8000/server');
+        xhr.setRequestHeader('name','zhaxiaobing');
+        //post参数可以写在send里面
+        xhr.send('a=100&b=200&c=300');
+        xhr.onreadystatechange = function (){
+            if(xhr.readyState === 4){
+                if(xhr.status >= 200 && xhr.status <= 300){
+                    // console.log(xhr.status);//状态码
+                    // console.log(xhr.statusText);//转态字符串
+                    // console.log(xhr.getAllResponseHeaders());//响应头
+                    console.log(xhr.response);//响应体
+                    box.innerHTML = `<p>${xhr.response.name}</p><p>${xhr.response.age}</p><p>${xhr.response.school}</p>`
+                }else{
+
+                }
+            }
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>手动取消请求</title>
+</head>
+<body>
+    <button id="send">发送请求</button>
+    <button id="cancel">取消请求</button>
+</body>
+<script>
+    //获取元素
+    const btn1 = document.getElementById('send');
+    const btn2 = document.getElementById('cancel');
+    //绑定事件
+    let xhr = undefined;
+    btn1.onclick = function (){
+        xhr = new XMLHttpRequest();
+        xhr.responseType = 'json';
+        xhr.open('post','http://127.0.0.1:8000/server');
+        xhr.send('a=100&b=200&c=300');
+        xhr.onreadystatechange = function (){
+            if(xhr.readyState === 4){
+                if(xhr.status >= 200 && xhr.status < 300){
+                    console.log(xhr.response);//响应体
+                }else{
+
+                }
+            }
+        }
+    }
+    btn2.onclick = function (){
+        //可以手动取消请求
+        xhr.abort();
+    }
+</script>
+</html>
